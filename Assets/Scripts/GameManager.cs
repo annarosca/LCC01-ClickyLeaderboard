@@ -1,18 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private int score;
+    [SerializeField] private float timerSeconds = 5;
+    private bool gameOver = false;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI timerText;
+
     void Start()
     {
-        
+        score = 0;
+        scoreText.text = "Score: " + score;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (timerSeconds > 0)
+        {
+            timerSeconds -= Time.deltaTime;
+        }
+        else
+        {
+            gameOver = true;
+        }
+        scoreText.text = "Score: " + score;
+        timerText.text = timerSeconds.ToString("F0") + " sec";
+
+    }
+
+    public void IncreaseScore()
+    {
+        if (!gameOver)
+        {
+            score++;
+        }
     }
 }

@@ -8,41 +8,61 @@ public class Leaderboard : MonoBehaviour
 {
     private Transform entryContainer;
     [SerializeField] private Transform entryTemplate;
+    private List<HighscoreEntry> highscoreEntryList;
+    private List<Transform> highscoreEntryTransformList;
     private float templateHeight = 35f;
     private void Awake()
     {
         entryContainer = transform.Find("highscoreListContainer");
-        //entryTemplate = transform.Find("highscoreEntryTemplate");
-        Debug.Log(entryContainer);
-        Debug.Log(entryTemplate);
 
         entryTemplate.gameObject.SetActive(false);
 
-        for (int i = 0; i < 5; i++)
+        highscoreEntryList = new List<HighscoreEntry>()
         {
-            Transform entryTransform = Instantiate(entryTemplate, entryContainer);
-            RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
-            entryRectTransform.anchoredPosition = new Vector2(0, -templateHeight * i);
-            entryRectTransform.gameObject.SetActive(true);
+            new HighscoreEntry{ score = 23, name = "ABC" },
+            new HighscoreEntry{ score = 34, name = "DFG" },
+            new HighscoreEntry{ score = 14, name = "HIJ" },
+            new HighscoreEntry{ score = 45, name = "KLM" },
+            new HighscoreEntry{ score = 59, name = "NOP" }
+        };
 
-            int rank = i + 1;
-            string rankString;
-            switch (rank)
-            {
-                default:
-                    rankString = rank + "th"; break;
-
-                case 1: rankString = "1st"; break;
-                case 2: rankString = "2nd"; break;
-                case 3: rankString = "3rd"; break;
-            }
-
-            int score = Random.Range(1, 99);
-
-            string name = "ABC";
-            entryTransform.Find("PositionText").GetComponent<TextMeshProUGUI>().text = rankString;
-            entryTransform.Find("NameText").GetComponent<TextMeshProUGUI>().text = score.ToString();
-            entryTransform.Find("ScoreText").GetComponent<TextMeshProUGUI>().text = name;
+        highscoreEntryTransformList = new List<Transform>();
+        foreach (HighscoreEntry highscoreEntry in highscoreEntryList)
+        {
+            CreateHighscoreEntryTransform(highscoreEntry, entryContainer, highscoreEntryTransformList);
         }
+    }
+
+    private void CreateHighscoreEntryTransform(HighscoreEntry highscoreEntry, Transform container, List<Transform> transformList)
+    {
+        Transform entryTransform = Instantiate(entryTemplate, container);
+        RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
+        entryRectTransform.anchoredPosition = new Vector2(0, -templateHeight * transformList.Count);
+        entryRectTransform.gameObject.SetActive(true);
+
+        int rank = transformList.Count + 1;
+        string rankString = rank switch
+        {
+            1 => "1st",
+            2 => "2nd",
+            3 => "3rd",
+            _ => rank + "th",
+        };
+        int score = highscoreEntry.score;
+
+        string name = highscoreEntry.name;
+
+        entryTransform.Find("PositionText").GetComponent<TextMeshProUGUI>().text = rankString;
+        entryTransform.Find("NameText").GetComponent<TextMeshProUGUI>().text = score.ToString();
+        entryTransform.Find("ScoreText").GetComponent<TextMeshProUGUI>().text = name;
+
+        transformList.Add(entryTransform);
+
+    }
+
+    private class HighscoreEntry
+    {
+        public int score;
+        public string name;
     }
 }

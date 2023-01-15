@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class ClickyObject : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private int score = 0;
+    private void OnMouseDown()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        score++;
+        Debug.Log("Clicked " + score);
     }
 }

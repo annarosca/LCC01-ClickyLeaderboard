@@ -25,7 +25,7 @@ public class Leaderboard : MonoBehaviour
             new HighscoreEntry{ score = 45, name = "KLM" },
             new HighscoreEntry{ score = 59, name = "NOP" }
         };
-
+        SortLeaderboardList();
         highscoreEntryTransformList = new List<Transform>();
         foreach (HighscoreEntry highscoreEntry in highscoreEntryList)
         {
@@ -58,6 +58,22 @@ public class Leaderboard : MonoBehaviour
 
         transformList.Add(entryTransform);
 
+    }
+
+    private void SortLeaderboardList()
+    {
+        for (int i = 0; i < highscoreEntryList.Count; i++)
+        {
+            for (int j = i + 1; j < highscoreEntryList.Count; j++)
+            {
+                if (highscoreEntryList[j].score > highscoreEntryList[i].score)
+                {
+                    HighscoreEntry tmp = highscoreEntryList[i];
+                    highscoreEntryList[i] = highscoreEntryList[j];
+                    highscoreEntryList[j] = tmp;
+                }
+            }
+        }
     }
 
     private class HighscoreEntry

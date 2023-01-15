@@ -7,9 +7,12 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private int score;
     [SerializeField] private float timerSeconds = 5;
+    [SerializeField] private GameObject activeGameUI;
+    [SerializeField] private GameObject gameOverUI;
     private bool gameOver = false;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI timerText;
+    public TextMeshProUGUI finalScoreText;
 
     void Start()
     {
@@ -26,6 +29,9 @@ public class GameManager : MonoBehaviour
         else
         {
             gameOver = true;
+            finalScoreText.text = "Final Score: " + score;
+            activeGameUI.SetActive(false);
+            gameOverUI.SetActive(true);
         }
         scoreText.text = "Score: " + score;
         timerText.text = timerSeconds.ToString("F0") + " sec";
